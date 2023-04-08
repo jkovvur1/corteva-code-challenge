@@ -1,0 +1,19 @@
+Extra Credit - Deployment
+
+Using Serverless:
+
+We can use the AWS S3, Lambda, RDS
+
+1) We can split the two API endpoints and store the code in two Different Lambda functions that are connected to Amazon RDS to fetch Data
+2) We can use s3 buckets to store or upload new data files
+3) we can write another Lambda function which gets triggered when a new file is uploaded on given bucket to ingest the data into Amazon RDS and calculate the Averages
+
+
+
+Using VMs:
+
+We can use AWS ec2, RDS, S3
+
+1) We can deploy the application on an EC2 Instance and connect it to RDS service or deploy a sql server on the VM itself.
+2) we can upload the data files to bucket and wrte a cron job to fetch and Ingest Data and calculate Averages.
+
