@@ -38,9 +38,9 @@ for file_path in glob.glob("../../wx_data/*.txt"):
                 # Parse data from line
                 date_str, max_temp_str, min_temp_str, precip_str = line.strip().split("\t")
                 date = datetime.strptime(date_str, "%Y%m%d").date()
-                max_temp = float(max_temp_str) / 10.0 if max_temp_str != '-9999' else None
-                min_temp = float(min_temp_str) / 10.0 if min_temp_str != '-9999' else None
-                precip = float(precip_str) / 100.0 if precip_str != '-9999' else None
+                max_temp = float(max_temp_str) if max_temp_str != '-9999' else None
+                min_temp = float(min_temp_str) if min_temp_str != '-9999' else None
+                precip = float(precip_str) if precip_str != '-9999' else None
                     
                 # Insert weather data of the station
                 cur.execute("""

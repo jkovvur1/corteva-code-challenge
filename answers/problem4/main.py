@@ -4,10 +4,14 @@ import psycopg2
 from fastapi import FastAPI
 from typing import Optional
 
+# Creating FAST API instance
 app = FastAPI()
 
 
 def get_connection():
+    '''
+    Method to get database connection
+    '''
     conn = psycopg2.connect(
     host="0.0.0.0",
     database="weatherdb",
@@ -24,6 +28,7 @@ async def get_weather_data(station_id: Optional[int] = None, date: Optional[str]
     query = "SELECT * FROM weather_data"
     conditions = []
     params = []
+    # checking query params
     if station_id is not None:
         conditions.append("station_id = %s")
         params.append(station_id)
@@ -37,6 +42,7 @@ async def get_weather_data(station_id: Optional[int] = None, date: Optional[str]
     cur.execute(query, params)
     rows = cur.fetchall()
     result = []
+    # forming response
     for row in rows:
         result.append({"station_id":row[1],
                        "date": row[2].strftime("%Y-%m-%d"), 
@@ -53,6 +59,7 @@ async def get_weather_stats(station_id: Optional[int] = None, page: Optional[int
     conn = get_connection()
     cur = conn.cursor()
     query = "SELECT weather_data.station_id, weather_station.name, extract(year from weather_data.date), avg(weather_data.max_temperature/10.0), avg(weather_data.min_temperature/10.0), sum(weather_data.precipitation/10.0)/10.0 FROM weather_data JOIN weather_station ON weather_data.station_id = weather_station.id"
+    #checking query params
     if station_id is not None:
         query += f" WHERE weather_data.station_id={station_id}"
     query += " GROUP BY weather_data.station_id, weather_station.name, extract(year from weather_data.date)"
@@ -60,6 +67,7 @@ async def get_weather_stats(station_id: Optional[int] = None, page: Optional[int
     cur.execute(query)
     rows = cur.fetchall()
     result = []
+    #forming response
     for row in rows:
         data = {
             "station_id": row[0],
